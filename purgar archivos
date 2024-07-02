@@ -1,0 +1,23 @@
+import os
+import shutil
+from datetime import datetime
+
+def organize_files(directory):
+    for filename in os.listdir(directory):
+        if os.path.isfile(os.path.join(directory, filename)):
+            # Obtener la fecha de creación del archivo
+            creation_time = os.path.getctime(os.path.join(directory, filename))
+            creation_date = datetime.fromtimestamp(creation_time).strftime('%Y-%m-%d')
+
+            # Crear una carpeta para la fecha de creación si no existe
+            date_folder = os.path.join(directory, creation_date)
+            if not os.path.exists(date_folder):
+                os.makedirs(date_folder)
+
+            # Mover el archivo a la carpeta correspondiente
+            shutil.move(os.path.join(directory, filename), os.path.join(date_folder, filename))
+            print(f"Movido {filename} a {date_folder}")
+
+if __name__ == "__main__":
+    directory = "/ruta/a/tu/carpeta"
+    organize_files(directory)
